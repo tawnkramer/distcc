@@ -9,6 +9,7 @@ by Martin Pool
 
 ./autogen.sh
 ./configure --without-libiberty --disable-Werror
+make
 
 ```
 
