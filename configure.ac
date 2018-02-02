@@ -174,7 +174,8 @@ then
 -W -Wall -Wimplicit \
 -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings \
 -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes \
--Wnested-externs -Wmissing-declarations"
+-Wnested-externs -Wmissing-declarations \
+-g -O0"
 
     # -Wuninitialized requires -O
     case "$CFLAGS" in "-O"*|*" -O"*)
@@ -214,7 +215,9 @@ then
 
     AC_MSG_NOTICE([Adding gcc options: $CFLAGS])
 fi
+
 AC_SUBST(WERROR_CFLAGS)
+AC_SUBST(DEBUGGING_FLAGS)
 AC_SUBST(POPT_CFLAGS)
 AC_SUBST(PYTHON_CFLAGS)
 AC_ISC_POSIX

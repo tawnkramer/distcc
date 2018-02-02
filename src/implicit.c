@@ -81,7 +81,7 @@
  * Returns a dynamically allocated argv array in *out_argv.
  * The caller is responsible for deallocating it.
  **/
-inline int scan_args_for_linker(char *argv[])
+int scan_args_for_linker(char *argv[])
 {
     char *a;
     int i;
