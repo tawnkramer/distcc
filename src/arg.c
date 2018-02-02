@@ -134,6 +134,7 @@ int dcc_scan_args(char *argv[], char **input_file, char **output_file,
     int i;
     char *a;
     int ret;
+    char *temp_str = NULL;
 
      /* allow for -o foo.o */
     if ((ret = dcc_copy_argv(argv, ret_newargv, 2)) != 0)
@@ -156,7 +157,23 @@ int dcc_scan_args(char *argv[], char **input_file, char **output_file,
 
     for (i = 0; (a = argv[i]); i++) {
         if (a[0] == '-') {
-            if (!strcmp(a, "-E")) {
+            if (!strcmp(a, "--serialize-diagnostics") || !strcmp(a, "-index-store-path") || !strcmp(a, "-iquote")) {
+                /* These can simply be discarded */
+                rs_trace("Discarding '%s'", a);
+                free(argv[i]);
+                temp_str = malloc(1);
+                temp_str[0] = (char)NULL;
+                argv[i] = temp_str;
+                free(argv[i+1]);
+                temp_str = malloc(1);
+                temp_str[0] = (char)NULL;
+                argv[i+1] = temp_str;
+                i++;
+            } else if (str_startswith("-fmodule", a) || str_startswith("-build-session-file", a)) {
+                /* Doesn't look like these can be distributed. Can they also be discarded? */
+                rs_trace("Found '%s' so building locally", a);
+                return EXIT_DISTCC_FAILED;
+            } else if (!strcmp(a, "-E")) {
                 rs_trace("-E call for cpp must be local");
                 return EXIT_DISTCC_FAILED;
             } else if (!strcmp(a, "-MD") || !strcmp(a, "-MMD")) {
