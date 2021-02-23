@@ -811,7 +811,8 @@ static void dopr_outch(char *buffer, size_t *currlen, size_t maxlen, char c)
     }
     (*currlen)++;
 }
-
+//Tawn - 2/23/2021 fixed compile error w sdk 10.15
+#undef vsnprintf
  int vsnprintf (char *str, size_t count, const char *fmt, va_list args)
 {
     return dopr(str, count, fmt, args);
@@ -827,6 +828,8 @@ static void dopr_outch(char *buffer, size_t *currlen, size_t maxlen, char c)
  * linkers? -- mbp
  */
 #if !defined(HAVE_SNPRINTF) || !defined(HAVE_C99_VSNPRINTF)
+//Tawn - 2/23/2021 fixed compile error w sdk 10.15
+#undef snprintf
  int snprintf(char *str,size_t count,const char *fmt,...)
 {
     size_t ret;
